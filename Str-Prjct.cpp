@@ -7,30 +7,37 @@ class Mystring {
 
 
 
-public:
-    char* str;
-    char* str_;
-    char* temp;
+    friend Mystring operator+( 
+        const Mystring& lhs, 
+        const Mystring& rhs);
+    public:
+        char* str;
+        char* str_;
+        char* temp;
 
-    Mystring();
+        Mystring();
 
-    // Constructor with 1 arguments 
-    Mystring(char* val);
+        // Constructor with 1 arguments 
+        Mystring(char* val);
 
-    // Copy Constructor 
-    Mystring(Mystring& source);
+        // Copy Constructor 
+        Mystring(Mystring& source);
 
-    void concat(Mystring& str1, Mystring& str2);
-    
-    void findchar(Mystring& str1, char chr);
+        void concat(Mystring& str1, Mystring& str2);
+        
+        void findchar(Mystring& str1, char chr);
 
-    void findstr(Mystring& str1, Mystring& str2);
+        void findstr(Mystring& str1, Mystring& str2);
 
-    void replace(int pos, int len, Mystring& str1, Mystring& str2);
+        void replace(int pos, int len, Mystring& str1, Mystring& str2);
 
+        Mystring& operator=( 
+            const Mystring& rhs);
     //// Destructor 
     //~Mystring() { delete str; }
 };
+
+
 
 // with no arguments
 Mystring::Mystring()
@@ -57,6 +64,41 @@ Mystring::Mystring(char* val)
 
         cout << "The string passed is: " << str << endl;
     }
+}
+
+// Overloading assignment
+Mystring& Mystring::operator=( 
+    const Mystring& rhs) 
+{ 
+    if (this == &rhs) 
+        return *this; 
+    delete[] str; 
+    str = new char[strlen(rhs.str) + 1]; 
+    strcpy(str, rhs.str); 
+    return *this; 
+}
+
+// Overloading + operator
+Mystring operator+(const Mystring& lhs, 
+                   const Mystring& rhs) 
+{ 
+    int length = strlen(lhs.str) 
+                 + strlen(rhs.str); 
+  
+    char* buff = new char[length + 1]; 
+  
+    // Copy the strings to buff[] 
+    strcpy(buff, lhs.str); 
+    strcat(buff, rhs.str); 
+  
+    // String temp  |**| initialize and then print
+    Mystring temp{ buff }; 
+  
+    // delete the buff[] 
+    delete[] buff; 
+  
+    // Return the concatenated string 
+    return temp; 
 }
 
 // Copy Constructor
@@ -202,11 +244,11 @@ int main()
     //copy
     Mystring c{ b };
 
-    cout << "c is: "<< c.str;
+    cout << "c is: "<< c.str << endl;
 
-
+    Mystring d;
+    d = b + b; 
 
 
 
 }
-
